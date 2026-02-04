@@ -164,7 +164,7 @@ infomatrix/
 
 This project was created for educational purposes as part of the Infomatrix 2026 competition.
 
-## Contact
+## Links
 
 - Project Repository: [infomatrix2026-website](https://github.com/kzhnbk/infomatrix2026-website)
 - Reseacrh Repository: [infomatrix2026](https://github.com/kzhnbk/infomatrix2026)
