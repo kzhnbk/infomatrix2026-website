@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+
+{% block title %}AGI - Automatic Genetic Interpretation | AI-Powered Variant Analysis{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-bg">
+        <div class="hero-particles" id="particles"></div>
+        <div class="hero-gradient"></div>
+    </div>
+
+    <div class="hero-content" data-aos="fade-up">
+        <div class="hero-badge">
+            <i class="fas fa-award"></i>
+            <span>AGI - Automatic Genetic Interpretation</span>
+        </div>
+
+        <h1 class="hero-title">
+            <span class="gradient-text">AI-Powered</span><br>
+            Cancer Mutation<br>
+            Classification
+        </h1>
+
+        <p class="hero-subtitle">
+            Accelerating precision medicine with machine learning. Our XGBoost model classifies genetic variants with
+            <strong>88% accuracy</strong>, reducing analysis time from weeks to minutes.
+        </p>
+
+        <div class="hero-cta">
+            <a href="{{ url_for('predict') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-microscope"></i>
+                Try Classification
+            </a>
+            <a href="{{ url_for('research') }}" class="btn btn-secondary btn-lg">
+                <i class="fas fa-book-open"></i>
+                View Research
+            </a>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-number" data-count="3300">0</span>
+                <span class="stat-label">Samples Analyzed</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-count="9">0</span>
+                <span class="stat-label">Classification Classes</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-count="88">0</span><span class="stat-suffix">%</span>
+                <span class="stat-label">Model Accuracy</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-count="264">0</span>
+                <span class="stat-label">Genes Studied</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-scroll">
+        <a href="#features" class="scroll-indicator">
+            <span>Scroll to explore</span>
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features" id="features">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Our Approach</span>
+            <h2 class="section-title">Advancing Cancer Research Through AI</h2>
+            <p class="section-subtitle">Combining cutting-edge machine learning with medical expertise to classify
+                genetic mutations</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>Machine Learning</h3>
+                <p>Advanced XGBoost and gradient boosting algorithms trained on thousands of genetic samples for
+                    accurate classification.</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> TF-IDF Feature Engineering</li>
+                    <li><i class="fas fa-check"></i> N-gram Analysis</li>
+                    <li><i class="fas fa-check"></i> Class Imbalance Handling</li>
+                </ul>
+            </div>
+
+            <div class="feature-card featured" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-badge">Best Performance</div>
+                <div class="feature-icon">
+                    <i class="fas fa-dna"></i>
+                </div>
+                <h3>Genetic Analysis</h3>
+                <p>Comprehensive analysis of genetic variants including oncogenes and tumor suppressors like BRCA1,
+                    TP53, and EGFR.</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> 264+ Gene Coverage</li>
+                    <li><i class="fas fa-check"></i> Mutation Type Detection</li>
+                    <li><i class="fas fa-check"></i> Clinical Significance</li>
+                </ul>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h3>Clinical Impact</h3>
+                <p>Supporting oncologists in treatment decisions by providing rapid, accurate variant classification.
+                </p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Treatment Guidance</li>
+                    <li><i class="fas fa-check"></i> Drug Resistance Detection</li>
+                    <li><i class="fas fa-check"></i> Prognosis Insights</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Process</span>
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">From genetic data to actionable insights in three simple steps</p>
+        </div>
+
+        <div class="steps-container">
+            <div class="step" data-aos="fade-right" data-aos-delay="100">
+                <div class="step-number">01</div>
+                <div class="step-content">
+                    <div class="step-icon"><i class="fas fa-file-medical"></i></div>
+                    <h3>Input Data</h3>
+                    <p>Enter gene name, mutation variant, and clinical text description from medical literature or
+                        reports.</p>
+                </div>
+            </div>
+
+            <div class="step-connector" data-aos="fade-up">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+
+            <div class="step" data-aos="fade-up" data-aos-delay="200">
+                <div class="step-number">02</div>
+                <div class="step-content">
+                    <div class="step-icon"><i class="fas fa-cogs"></i></div>
+                    <h3>AI Processing</h3>
+                    <p>Our XGBoost model analyzes the text using TF-IDF vectorization and advanced NLP techniques.</p>
+                </div>
+            </div>
+
+            <div class="step-connector" data-aos="fade-up">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+
+            <div class="step" data-aos="fade-left" data-aos-delay="300">
+                <div class="step-number">03</div>
+                <div class="step-content">
+                    <div class="step-icon"><i class="fas fa-chart-pie"></i></div>
+                    <h3>Classification</h3>
+                    <p>Receive instant classification into 9 clinical significance categories with probability scores.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Model Performance Section -->
+<section class="performance">
+    <div class="container">
+        <div class="performance-grid">
+            <div class="performance-content" data-aos="fade-right">
+                <span class="section-badge">Performance</span>
+                <h2 class="section-title">Best-in-Class Results</h2>
+                <p>Our XGBoost model outperforms traditional machine learning approaches with superior metrics across
+                    all benchmarks.</p>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">1.156</div>
+                        <div class="metric-label">Log Loss</div>
+                        <div class="metric-bar">
+                            <div class="metric-fill" style="width: 88%;"></div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">75.0%</div>
+                        <div class="metric-label">Accuracy</div>
+                        <div class="metric-bar">
+                            <div class="metric-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">0.718</div>
+                        <div class="metric-label">F1 Score</div>
+                        <div class="metric-bar">
+                            <div class="metric-fill" style="width: 72%;"></div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">0.878</div>
+                        <div class="metric-label">ROC-AUC</div>
+                        <div class="metric-bar">
+                            <div class="metric-fill" style="width: 88%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="{{ url_for('models') }}" class="btn btn-outline">
+                    More Information <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="performance-visual" data-aos="fade-left">
+                <div class="model-comparison-card">
+                    <h4><i class="fas fa-trophy"></i> Model Comparison</h4>
+                    <div class="comparison-list">
+                        <div class="comparison-item best">
+                            <span class="model-name"><i class="fas fa-star"></i> XGBoost</span>
+                            <span class="model-score">88%</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="model-name">LightGBM</span>
+                            <span class="model-score">88%</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="model-name">Random Forest</span>
+                            <span class="model-score">85%</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="model-name">Logistic Regression</span>
+                            <span class="model-score">67%</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="model-name">Naive Bayes</span>
+                            <span class="model-score">56%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Top Genes Section -->
+<section class="genes-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Genetic Data</span>
+            <h2 class="section-title">Top Studied Genes</h2>
+            <p class="section-subtitle">Key oncogenes and tumor suppressors in our dataset</p>
+        </div>
+
+        <div class="genes-carousel" data-aos="fade-up">
+            <div class="genes-track">
+                <div class="gene-card">
+                    <div class="gene-name">BRCA1</div>
+                    <div class="gene-freq">264 mutations</div>
+                    <div class="gene-role">Tumor Suppressor</div>
+                </div>
+                <div class="gene-card">
+                    <div class="gene-name">TP53</div>
+                    <div class="gene-freq">163 mutations</div>
+                    <div class="gene-role">Guardian of Genome</div>
+                </div>
+                <div class="gene-card">
+                    <div class="gene-name">EGFR</div>
+                    <div class="gene-freq">141 mutations</div>
+                    <div class="gene-role">Tyrosine Kinase</div>
+                </div>
+                <div class="gene-card">
+                    <div class="gene-name">PTEN</div>
+                    <div class="gene-freq">126 mutations</div>
+                    <div class="gene-role">PI3K Regulator</div>
+                </div>
+                <div class="gene-card">
+                    <div class="gene-name">BRCA2</div>
+                    <div class="gene-freq">125 mutations</div>
+                    <div class="gene-role">DNA Repair</div>
+                </div>
+                <div class="gene-card">
+                    <div class="gene-name">KIT</div>
+                    <div class="gene-freq">99 mutations</div>
+                    <div class="gene-role">Receptor Kinase</div>
+                </div>
+                <div class="gene-card">
+                    <div class="gene-name">BRAF</div>
+                    <div class="gene-freq">93 mutations</div>
+                    <div class="gene-role">Serine Kinase</div>
+                </div>
+                <div class="gene-card">
+                    <div class="gene-name">ALK</div>
+                    <div class="gene-freq">69 mutations</div>
+                    <div class="gene-role">Lung Cancer Driver</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content" data-aos="zoom-in">
+            <h2>Ready to Classify Your Genetic Variant?</h2>
+            <p>Use our AI-powered tool to get instant classification results with confidence scores.</p>
+            <a href="{{ url_for('predict') }}" class="btn btn-white btn-lg">
+                <i class="fas fa-play"></i> Start Classification
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,325 @@
+{% extends "base.html" %}
+
+{% block title %}Predict - AGI Automatic Genetic Interpretation{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header predict-header">
+    <div class="container">
+        <div class="page-header-content" data-aos="fade-up">
+            <span class="section-badge">AI Classification</span>
+            <h1>Genetic Variant Classifier</h1>
+            <p>Enter mutation details to get instant classification using our XGBoost model</p>
+        </div>
+    </div>
+</section>
+
+<!-- Prediction Form -->
+<section class="prediction-section">
+    <div class="container">
+        <div class="prediction-grid">
+            <!-- Input Form -->
+            <div class="prediction-form-container" data-aos="fade-right">
+                <div class="form-card">
+                    <div class="form-header">
+                        <h2><i class="fas fa-edit"></i> Input Data</h2>
+                        <p>Provide genetic variant information for classification</p>
+                    </div>
+
+                    <form method="POST" action="{{ url_for('predict') }}" id="predictionForm">
+                        <div class="form-group">
+                            <label for="gene">
+                                <i class="fas fa-dna"></i> Gene Name
+                                <span class="optional">(Optional)</span>
+                            </label>
+                            <input type="text" id="gene" name="gene"
+                                   placeholder="e.g., BRCA1, TP53, EGFR"
+                                   value="{{ gene }}"
+                                   autocomplete="off">
+                            <div class="input-hint">Enter the gene symbol (e.g., BRCA1, TP53, EGFR)</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="variation">
+                                <i class="fas fa-code-branch"></i> Variation
+                                <span class="optional">(Optional)</span>
+                            </label>
+                            <input type="text" id="variation" name="variation"
+                                   placeholder="e.g., V600E, L858R, Deletion"
+                                   value="{{ variation }}"
+                                   autocomplete="off">
+                            <div class="input-hint">Mutation type or specific variant notation</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="text">
+                                <i class="fas fa-file-medical-alt"></i> Clinical Text Description
+                                <span class="required">*</span>
+                            </label>
+                            <textarea id="text" name="text" rows="8" required
+                                      placeholder="Enter clinical text description, research findings, or PubMed excerpt describing the genetic variant and its clinical significance...">{{ input_text }}</textarea>
+                            <div class="input-hint">Paste medical literature text, clinical notes, or research findings about the variant</div>
+                            <div class="char-count"><span id="charCount">0</span> characters</div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitBtn">
+                            <i class="fas fa-microscope"></i>
+                            <span>Classify Variant</span>
+                            <div class="btn-loader" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                        </button>
+                    </form>
+
+                    <!-- Sample Data -->
+                    <div class="sample-data">
+                        <h4><i class="fas fa-lightbulb"></i> Try Sample Data</h4>
+                        <div class="sample-buttons">
+                            <button type="button" class="sample-btn" data-gene="BRAF" data-variation="V600E" data-text="The BRAF V600E mutation is the most common BRAF mutation in cancer, found in approximately 50% of melanomas. This mutation results in constitutive activation of the BRAF kinase, leading to uncontrolled cell proliferation. V600E is associated with poor prognosis but is targetable with BRAF inhibitors such as vemurafenib and dabrafenib. Clinical trials have demonstrated significant response rates in patients with V600E-mutant melanoma treated with these targeted therapies.">
+                                <i class="fas fa-dna"></i> BRAF V600E
+                            </button>
+                            <button type="button" class="sample-btn" data-gene="EGFR" data-variation="L858R" data-text="The EGFR L858R mutation is one of the most common activating mutations in non-small cell lung cancer (NSCLC), accounting for approximately 40-45% of EGFR mutations. This point mutation in exon 21 results in constitutive activation of the EGFR tyrosine kinase domain. Patients with L858R mutations typically show excellent response to first-generation EGFR tyrosine kinase inhibitors (TKIs) such as erlotinib and gefitinib, with response rates of 60-80%.">
+                                <i class="fas fa-dna"></i> EGFR L858R
+                            </button>
+                            <button type="button" class="sample-btn" data-gene="BRCA1" data-variation="Deletion" data-text="BRCA1 is a tumor suppressor gene involved in DNA double-strand break repair through homologous recombination. Loss-of-function mutations in BRCA1 significantly increase the risk of breast and ovarian cancer. This variant appears to be a neutral polymorphism with no significant impact on protein function based on population frequency data and functional studies.">
+                                <i class="fas fa-dna"></i> BRCA1 Neutral
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="prediction-results-container" data-aos="fade-left">
+                {% if error %}
+                <div class="result-card error">
+                    <div class="result-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <h3>Error</h3>
+                    <p>{{ error }}</p>
+                </div>
+                {% elif prediction %}
+                <div class="result-card success">
+                    <div class="result-header">
+                        <div class="result-icon" style="background: {{ prediction.info.color }}20; color: {{ prediction.info.color }}">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="result-badge">Classification Complete</div>
+                    </div>
+
+                    <div class="result-main">
+                        <div class="predicted-class" style="--class-color: {{ prediction.info.color }}">
+                            <span class="class-number">Class {{ prediction.class }}</span>
+                            <h2>{{ prediction.info.name }}</h2>
+                            <p>{{ prediction.info.description }}</p>
+                        </div>
+                    </div>
+
+                    {% if probabilities %}
+                    <div class="probabilities-section">
+                        <h4><i class="fas fa-chart-pie"></i> Probability Distribution</h4>
+                        <div class="probability-bars">
+                            {% for prob in probabilities[:5] %}
+                            <div class="prob-item">
+                                <div class="prob-header">
+                                    <span class="prob-class">Class {{ prob.class }}: {{ prob.name }}</span>
+                                    <span class="prob-value">{{ (prob.probability * 100)|round(1) }}%</span>
+                                </div>
+                                <div class="prob-bar">
+                                    <div class="prob-fill" style="width: {{ (prob.probability * 100)|round(1) }}%; background: {{ prob.color }}"></div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        {% if probabilities|length > 5 %}
+                        <button type="button" class="show-all-btn" id="showAllProbs">
+                            <i class="fas fa-chevron-down"></i> Show All Classes
+                        </button>
+                        <div class="all-probabilities" id="allProbs" style="display: none;">
+                            {% for prob in probabilities[5:] %}
+                            <div class="prob-item">
+                                <div class="prob-header">
+                                    <span class="prob-class">Class {{ prob.class }}: {{ prob.name }}</span>
+                                    <span class="prob-value">{{ (prob.probability * 100)|round(1) }}%</span>
+                                </div>
+                                <div class="prob-bar">
+                                    <div class="prob-fill" style="width: {{ (prob.probability * 100)|round(1) }}%; background: {{ prob.color }}"></div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <div class="result-disclaimer">
+                        <i class="fas fa-info-circle"></i>
+                        <p>This classification is for research purposes only. Always consult qualified healthcare professionals for clinical decisions.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="result-card placeholder">
+                    <div class="placeholder-content">
+                        <div class="placeholder-icon">
+                            <i class="fas fa-microscope"></i>
+                        </div>
+                        <h3>Ready to Classify</h3>
+                        <p>Enter genetic variant information and clinical text description to get AI-powered classification results.</p>
+
+                        <div class="class-preview">
+                            <h4>Available Classifications</h4>
+                            <div class="class-chips">
+                                {% for class_id, info in class_descriptions.items() %}
+                                <span class="class-chip" style="--chip-color: {{ info.color }}">
+                                    {{ info.name }}
+                                </span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Model Info Card -->
+                <div class="model-info-card" data-aos="fade-up">
+                    <h4><i class="fas fa-brain"></i> Powered by XGBoost</h4>
+                    <div class="model-stats">
+                        <div class="model-stat">
+                            <span class="stat-value">75%</span>
+                            <span class="stat-label">Accuracy</span>
+                        </div>
+                        <div class="model-stat">
+                            <span class="stat-value">0.878</span>
+                            <span class="stat-label">ROC-AUC</span>
+                        </div>
+                        <div class="model-stat">
+                            <span class="stat-value">1.156</span>
+                            <span class="stat-label">Log Loss</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How to Use -->
+<section class="how-to-use">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Guide</span>
+            <h2 class="section-title">How to Use</h2>
+        </div>
+
+        <div class="guide-grid">
+            <div class="guide-step" data-aos="fade-up" data-aos-delay="100">
+                <div class="step-number">1</div>
+                <h4>Enter Gene & Variant</h4>
+                <p>Optionally provide the gene name (e.g., BRCA1) and specific variant (e.g., V600E)</p>
+            </div>
+
+            <div class="guide-step" data-aos="fade-up" data-aos-delay="200">
+                <div class="step-number">2</div>
+                <h4>Add Clinical Text</h4>
+                <p>Paste relevant medical literature, clinical notes, or research findings about the variant</p>
+            </div>
+
+            <div class="guide-step" data-aos="fade-up" data-aos-delay="300">
+                <div class="step-number">3</div>
+                <h4>Get Classification</h4>
+                <p>Receive instant classification into one of 9 clinical significance categories</p>
+            </div>
+
+            <div class="guide-step" data-aos="fade-up" data-aos-delay="400">
+                <div class="step-number">4</div>
+                <h4>Review Probabilities</h4>
+                <p>Analyze confidence scores across all classification classes</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- API Section -->
+<section class="api-section">
+    <div class="container">
+        <div class="api-card" data-aos="fade-up">
+            <div class="api-header">
+                <h3><i class="fas fa-code"></i> REST API Available</h3>
+                <span class="api-badge">JSON</span>
+            </div>
+            <p>Integrate our classifier into your applications using our simple REST API.</p>
+            <div class="code-block">
+                <pre><code>POST /api/predict
+Content-Type: application/json
+
+{
+    "text": "Clinical description of the genetic variant..."
+}
+
+Response:
+{
+    "prediction": 5,
+    "class_name": "Pathogenic",
+    "description": "Variant is known to cause disease",
+    "probabilities": {...}
+}</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Character counter
+    const textArea = document.getElementById('text');
+    const charCount = document.getElementById('charCount');
+
+    if (textArea && charCount) {
+        textArea.addEventListener('input', function() {
+            charCount.textContent = this.value.length;
+        });
+        charCount.textContent = textArea.value.length;
+    }
+
+    // Sample data buttons
+    document.querySelectorAll('.sample-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.getElementById('gene').value = this.dataset.gene;
+            document.getElementById('variation').value = this.dataset.variation;
+            document.getElementById('text').value = this.dataset.text;
+            charCount.textContent = this.dataset.text.length;
+        });
+    });
+
+    // Show all probabilities
+    const showAllBtn = document.getElementById('showAllProbs');
+    const allProbs = document.getElementById('allProbs');
+
+    if (showAllBtn && allProbs) {
+        showAllBtn.addEventListener('click', function() {
+            if (allProbs.style.display === 'none') {
+                allProbs.style.display = 'block';
+                this.innerHTML = '<i class="fas fa-chevron-up"></i> Hide';
+            } else {
+                allProbs.style.display = 'none';
+                this.innerHTML = '<i class="fas fa-chevron-down"></i> Show All Classes';
+            }
+        });
+    }
+
+    // Form submission loading state
+    const form = document.getElementById('predictionForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (form && submitBtn) {
+        form.addEventListener('submit', function() {
+            submitBtn.querySelector('span').style.display = 'none';
+            submitBtn.querySelector('.btn-loader').style.display = 'inline-block';
+            submitBtn.disabled = true;
+        });
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,350 @@
+{% extends "base.html" %}
+
+{% block title %}Research - AGI Automatic Genetic Interpretation{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content" data-aos="fade-up">
+            <span class="section-badge">Research</span>
+            <h1>Research & Data Analysis</h1>
+            <p>Comprehensive analysis of genetic mutation data and feature engineering</p>
+        </div>
+    </div>
+</section>
+
+<!-- Dataset Overview -->
+<section class="dataset-overview">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Dataset</span>
+            <h2 class="section-title">Dataset Description</h2>
+            <p class="section-subtitle">Understanding our training data</p>
+        </div>
+
+        <div class="data-cards">
+            <div class="data-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="data-icon">
+                    <i class="fas fa-dna"></i>
+                </div>
+                <h3>Genetic Data</h3>
+                <p>Gene names (TP53, EGFR, BRCA1), specific variants including point mutations, deletions, and insertions</p>
+            </div>
+
+            <div class="data-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="data-icon">
+                    <i class="fas fa-file-medical-alt"></i>
+                </div>
+                <h3>Textual Descriptions</h3>
+                <p>Excerpts from PubMed articles, clinical notes, research findings, descriptions of molecular mechanisms</p>
+            </div>
+
+            <div class="data-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="data-icon">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <h3>Target Variable</h3>
+                <p>9 classes of clinical significance from neutral variants to oncogenic drivers</p>
+            </div>
+
+            <div class="data-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="data-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3>Dataset Size</h3>
+                <p>~3,300 samples with substantial class imbalance (from 19 to 953 samples per class)</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Text Statistics -->
+<section class="text-stats">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">NLP Analysis</span>
+            <h2 class="section-title">Text Processing Complexity</h2>
+            <p class="section-subtitle">Statistical characteristics of medical texts</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="100">
+                <div class="stat-icon"><i class="fas fa-text-width"></i></div>
+                <div class="stat-value">~1,500</div>
+                <div class="stat-label">Avg. Characters/Text</div>
+                <div class="stat-note">Up to 5,000 in rare cases</div>
+            </div>
+
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="150">
+                <div class="stat-icon"><i class="fas fa-book"></i></div>
+                <div class="stat-value">~15,000</div>
+                <div class="stat-label">Unique Tokens</div>
+                <div class="stat-note">Excluding stop words</div>
+            </div>
+
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="200">
+                <div class="stat-icon"><i class="fas fa-search"></i></div>
+                <div class="stat-value">~40%</div>
+                <div class="stat-label">Rare Terms</div>
+                <div class="stat-note">Words appearing &lt;5 times</div>
+            </div>
+
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="250">
+                <div class="stat-icon"><i class="fas fa-microscope"></i></div>
+                <div class="stat-value">1 in 3-4</div>
+                <div class="stat-label">Medical Terms</div>
+                <div class="stat-note">Specialized vocabulary density</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Text Processing Methods -->
+<section class="processing-methods">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Methods</span>
+            <h2 class="section-title">Text Processing Techniques</h2>
+        </div>
+
+        <div class="methods-grid">
+            <div class="method-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="method-header">
+                    <div class="method-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>TF-IDF</h3>
+                </div>
+                <p><strong>Term Frequency-Inverse Document Frequency</strong></p>
+                <p>Identifies rare but informative terms. Certain terms appear infrequently but strongly correlate with specific treatment classes.</p>
+                <div class="method-tag">Feature Engineering</div>
+            </div>
+
+            <div class="method-card" data-aos="fade-up" data-aos-delay="150">
+                <div class="method-header">
+                    <div class="method-icon"><i class="fas fa-link"></i></div>
+                    <h3>N-grams</h3>
+                </div>
+                <p><strong>Bigrams and Trigrams</strong></p>
+                <p>Captures stable word combinations. Without n-grams, critical contextual information is lost in medical terminology.</p>
+                <div class="method-tag">Sequence Analysis</div>
+            </div>
+
+            <div class="method-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="method-header">
+                    <div class="method-icon"><i class="fas fa-tags"></i></div>
+                    <h3>NER</h3>
+                </div>
+                <p><strong>Named Entity Recognition</strong></p>
+                <p>Identification of genes, drugs, and diseases from unstructured medical text.</p>
+                <div class="method-tag">Entity Extraction</div>
+            </div>
+
+            <div class="method-card" data-aos="fade-up" data-aos-delay="250">
+                <div class="method-header">
+                    <div class="method-icon"><i class="fas fa-project-diagram"></i></div>
+                    <h3>Embeddings</h3>
+                </div>
+                <p><strong>RoBERTa Word Embeddings</strong></p>
+                <p>Vector representations where semantically similar terms are located close in high-dimensional space.</p>
+                <div class="method-tag">Deep Learning</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Top Genes -->
+<section class="top-genes">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Genetic Analysis</span>
+            <h2 class="section-title">Top 10 Genes</h2>
+            <p class="section-subtitle">Key oncogenes and tumor suppressors in our dataset</p>
+        </div>
+
+        <div class="genes-table-container" data-aos="fade-up">
+            <table class="genes-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Gene</th>
+                        <th>Frequency</th>
+                        <th>Clinical Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for gene in top_genes %}
+                    <tr>
+                        <td><span class="rank-badge">{{ loop.index }}</span></td>
+                        <td><strong class="gene-name">{{ gene.gene }}</strong></td>
+                        <td>
+                            <div class="freq-bar-container">
+                                <div class="freq-bar" style="width: {{ (gene.frequency / 264 * 100)|int }}%;"></div>
+                                <span class="freq-value">{{ gene.frequency }}</span>
+                            </div>
+                        </td>
+                        <td>{{ gene.role }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="gene-insights" data-aos="fade-up">
+            <div class="insight-card">
+                <i class="fas fa-info-circle"></i>
+                <div class="insight-content">
+                    <h4>Key Insight</h4>
+                    <p><strong>80%</strong> of all mutations are concentrated in <strong>~50 genes</strong> (oncogenic hotspots). The top 5 genes (BRCA1, TP53, EGFR, PTEN, BRCA2) account for <strong>~30%</strong> of the dataset.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Class Distribution -->
+<section class="class-distribution">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Classes</span>
+            <h2 class="section-title">Class Distribution</h2>
+            <p class="section-subtitle">Understanding the 9 clinical significance classes</p>
+        </div>
+
+        <div class="class-grid">
+            {% for class_id, info in class_descriptions.items() %}
+            <div class="class-card" data-aos="zoom-in" data-aos-delay="{{ loop.index * 50 }}" style="--class-color: {{ info.color }}">
+                <div class="class-number">{{ class_id }}</div>
+                <h4>{{ info.name }}</h4>
+                <p>{{ info.description }}</p>
+                <div class="class-indicator" style="background: {{ info.color }}"></div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="imbalance-alert" data-aos="fade-up">
+            <div class="alert-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <div class="alert-content">
+                <h4>Class Imbalance Challenge</h4>
+                <p>Extreme imbalance exists: Class 7 has <strong>953 samples (28.7%)</strong> while Class 8 has only <strong>19 samples (0.6%)</strong> - a 50x difference. We address this using class weighting, stratified validation, and ensemble methods.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Class Details Table -->
+<section class="class-details">
+    <div class="container">
+        <div class="class-table-container" data-aos="fade-up">
+            <table class="class-table">
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Count</th>
+                        <th>Percentage</th>
+                        <th>Interpretation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="class-badge" style="background: #0e7490">7</span></td>
+                        <td>953</td>
+                        <td><div class="percent-bar"><div style="width: 100%"></div></div><span>28.7%</span></td>
+                        <td>Dominant class - likely neutral or uncertain variants</td>
+                    </tr>
+                    <tr>
+                        <td><span class="class-badge" style="background: #f59e0b">4</span></td>
+                        <td>686</td>
+                        <td><div class="percent-bar"><div style="width: 72%"></div></div><span>20.7%</span></td>
+                        <td>Second-largest - likely known pathogenic variants</td>
+                    </tr>
+                    <tr>
+                        <td><span class="class-badge" style="background: #14b8a6">1</span></td>
+                        <td>568</td>
+                        <td><div class="percent-bar"><div style="width: 60%"></div></div><span>17.1%</span></td>
+                        <td>Likely neutral variants</td>
+                    </tr>
+                    <tr>
+                        <td><span class="class-badge" style="background: #0d9488">2</span></td>
+                        <td>452</td>
+                        <td><div class="percent-bar"><div style="width: 47%"></div></div><span>13.6%</span></td>
+                        <td>Likely neutral (VUS)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="class-badge" style="background: #dc2626">5</span></td>
+                        <td>275</td>
+                        <td><div class="percent-bar"><div style="width: 29%"></div></div><span>8.3%</span></td>
+                        <td>Pathogenic variants</td>
+                    </tr>
+                    <tr>
+                        <td><span class="class-badge" style="background: #0891b2">6</span></td>
+                        <td>242</td>
+                        <td><div class="percent-bar"><div style="width: 25%"></div></div><span>7.3%</span></td>
+                        <td>Likely oncogenic</td>
+                    </tr>
+                    <tr>
+                        <td><span class="class-badge" style="background: #eab308">3</span></td>
+                        <td>89</td>
+                        <td><div class="percent-bar"><div style="width: 9%"></div></div><span>2.7%</span></td>
+                        <td>Uncertain significance</td>
+                    </tr>
+                    <tr>
+                        <td><span class="class-badge" style="background: #3d5a73">9</span></td>
+                        <td>37</td>
+                        <td><div class="percent-bar"><div style="width: 4%"></div></div><span>1.1%</span></td>
+                        <td>Resistance mutations - high misclassification risk</td>
+                    </tr>
+                    <tr>
+                        <td><span class="class-badge" style="background: #06b6d4">8</span></td>
+                        <td>19</td>
+                        <td><div class="percent-bar"><div style="width: 2%"></div></div><span>0.6%</span></td>
+                        <td>Critically small class - 50x smaller than dominant</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- Handling Imbalance -->
+<section class="imbalance-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Solutions</span>
+            <h2 class="section-title">Handling Class Imbalance</h2>
+        </div>
+
+        <div class="solutions-grid">
+            <div class="solution-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="solution-icon"><i class="fas fa-balance-scale"></i></div>
+                <h3>Class Weighting</h3>
+                <p>Automatically assigning higher loss weights to rare classes during training.</p>
+            </div>
+
+            <div class="solution-card" data-aos="fade-up" data-aos-delay="150">
+                <div class="solution-icon"><i class="fas fa-layer-group"></i></div>
+                <h3>Stratified Validation</h3>
+                <p>Preserving class proportions in train/test splits for unbiased evaluation.</p>
+            </div>
+
+            <div class="solution-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="solution-icon"><i class="fas fa-sitemap"></i></div>
+                <h3>Ensemble Methods</h3>
+                <p>Gradient boosting models (XGBoost, LightGBM) naturally focus on difficult and minority examples.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content" data-aos="zoom-in">
+            <h2>See How Models Perform</h2>
+            <p>Compare the performance of different machine learning models on this dataset.</p>
+            <a href="{{ url_for('models') }}" class="btn btn-white btn-lg">
+                <i class="fas fa-chart-bar"></i> View Model Comparison
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

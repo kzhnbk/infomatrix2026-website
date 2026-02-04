@@ -1,0 +1,345 @@
+{% extends "base.html" %}
+
+{% block title %}Models - AGI Automatic Genetic Interpretation{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content" data-aos="fade-up">
+            <span class="section-badge">Machine Learning</span>
+            <h1>Model Comparison</h1>
+            <p>Performance analysis of different classification algorithms</p>
+        </div>
+    </div>
+</section>
+
+<!-- Winner Highlight -->
+<section class="winner-section">
+    <div class="container">
+        <div class="winner-card" data-aos="zoom-in">
+            <div class="winner-badge">
+                <i class="fas fa-trophy"></i>
+                <span>Best Model</span>
+            </div>
+            <div class="winner-content">
+                <h2>XGBoost</h2>
+                <p class="winner-subtitle">Extreme Gradient Boosting</p>
+                <div class="winner-metrics">
+                    <div class="winner-metric">
+                        <span class="metric-label">Log Loss</span>
+                        <span class="metric-value">1.156</span>
+                    </div>
+                    <div class="winner-metric">
+                        <span class="metric-label">Accuracy</span>
+                        <span class="metric-value">75.0%</span>
+                    </div>
+                    <div class="winner-metric">
+                        <span class="metric-label">F1 Macro</span>
+                        <span class="metric-value">0.718</span>
+                    </div>
+                    <div class="winner-metric">
+                        <span class="metric-label">ROC-AUC</span>
+                        <span class="metric-value">0.878</span>
+                    </div>
+                </div>
+            </div>
+            <div class="winner-reasons">
+                <h4>Why XGBoost Wins</h4>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Captures nonlinear feature interactions</li>
+                    <li><i class="fas fa-check-circle"></i> Handles class imbalance through iterative focus</li>
+                    <li><i class="fas fa-check-circle"></i> Robust against overfitting in high-dimensional spaces</li>
+                    <li><i class="fas fa-check-circle"></i> Best overall Log Loss score (1.156)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Performance Table -->
+<section class="performance-table-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Comparison</span>
+            <h2 class="section-title">Performance Metrics</h2>
+            <p class="section-subtitle">Detailed comparison across all evaluated models</p>
+        </div>
+
+        <div class="table-container" data-aos="fade-up">
+            <table class="performance-table">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Log Loss <i class="fas fa-arrow-down" title="Lower is better"></i></th>
+                        <th>Accuracy <i class="fas fa-arrow-up" title="Higher is better"></i></th>
+                        <th>F1 (Macro) <i class="fas fa-arrow-up" title="Higher is better"></i></th>
+                        <th>ROC-AUC <i class="fas fa-arrow-up" title="Higher is better"></i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for model in model_performance %}
+                    <tr class="{% if model.model == 'XGBoost' %}highlight{% endif %}">
+                        <td>
+                            <div class="model-name-cell">
+                                {% if model.model == 'XGBoost' %}
+                                <i class="fas fa-crown gold"></i>
+                                {% elif model.model == 'LightGBM' %}
+                                <i class="fas fa-medal silver"></i>
+                                {% elif model.model == 'Random Forest' %}
+                                <i class="fas fa-medal bronze"></i>
+                                {% else %}
+                                <i class="fas fa-circle"></i>
+                                {% endif %}
+                                <span>{{ model.model }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="metric-cell {% if model.log_loss < 2 %}good{% elif model.log_loss < 10 %}medium{% else %}bad{% endif %}">
+                                {{ model.log_loss }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="progress-cell">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: {{ (model.accuracy * 100)|int }}%"></div>
+                                </div>
+                                <span>{{ (model.accuracy * 100)|round(1) }}%</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="metric-cell {% if model.f1_macro > 0.7 %}good{% elif model.f1_macro > 0.5 %}medium{% else %}bad{% endif %}">
+                                {{ model.f1_macro }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="progress-cell">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: {{ (model.roc_auc * 100)|int }}%"></div>
+                                </div>
+                                <span>{{ model.roc_auc }}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- Visual Comparison -->
+<section class="visual-comparison">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Visualization</span>
+            <h2 class="section-title">Visual Performance Comparison</h2>
+        </div>
+
+        <div class="charts-grid">
+            <!-- Log Loss Chart -->
+            <div class="chart-card" data-aos="fade-up" data-aos-delay="100">
+                <h3><i class="fas fa-chart-bar"></i> Log Loss (Lower is Better)</h3>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <span class="bar-label">XGBoost</span>
+                        <div class="bar-container">
+                            <div class="bar best" style="width: 4%"><span>1.156</span></div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">Random Forest</span>
+                        <div class="bar-container">
+                            <div class="bar good" style="width: 4%"><span>1.280</span></div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">LightGBM</span>
+                        <div class="bar-container">
+                            <div class="bar good" style="width: 4%"><span>1.429</span></div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">Log. Regression</span>
+                        <div class="bar-container">
+                            <div class="bar medium" style="width: 7%"><span>2.066</span></div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">Naive Bayes</span>
+                        <div class="bar-container">
+                            <div class="bar bad" style="width: 100%"><span>32.285</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROC-AUC Chart -->
+            <div class="chart-card" data-aos="fade-up" data-aos-delay="200">
+                <h3><i class="fas fa-chart-line"></i> ROC-AUC (Higher is Better)</h3>
+                <div class="bar-chart horizontal">
+                    <div class="bar-item">
+                        <span class="bar-label">LightGBM</span>
+                        <div class="bar-container">
+                            <div class="bar good" style="width: 88%"><span>0.881</span></div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">XGBoost</span>
+                        <div class="bar-container">
+                            <div class="bar best" style="width: 88%"><span>0.878</span></div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">Random Forest</span>
+                        <div class="bar-container">
+                            <div class="bar good" style="width: 85%"><span>0.851</span></div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">Log. Regression</span>
+                        <div class="bar-container">
+                            <div class="bar medium" style="width: 67%"><span>0.671</span></div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">Naive Bayes</span>
+                        <div class="bar-container">
+                            <div class="bar bad" style="width: 56%"><span>0.563</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Model Analysis -->
+<section class="model-analysis">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Analysis</span>
+            <h2 class="section-title">Detailed Model Analysis</h2>
+        </div>
+
+        <div class="analysis-grid">
+            <!-- Gradient Boosting -->
+            <div class="analysis-card success" data-aos="fade-up" data-aos-delay="100">
+                <div class="analysis-header">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Gradient Boosting Models</h3>
+                    <span class="badge success">Recommended</span>
+                </div>
+                <p class="analysis-subtitle">XGBoost & LightGBM</p>
+                <ul class="analysis-list">
+                    <li><i class="fas fa-plus"></i> Capture nonlinear feature interactions effectively</li>
+                    <li><i class="fas fa-plus"></i> Automatically address class imbalance through iterative focus on difficult samples</li>
+                    <li><i class="fas fa-plus"></i> Robust against overfitting in high-dimensional TF-IDF feature spaces</li>
+                    <li><i class="fas fa-plus"></i> Best overall performance across all metrics</li>
+                </ul>
+            </div>
+
+            <!-- Tree-based -->
+            <div class="analysis-card warning" data-aos="fade-up" data-aos-delay="200">
+                <div class="analysis-header">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <h3>Random Forest</h3>
+                    <span class="badge warning">Moderate</span>
+                </div>
+                <p class="analysis-subtitle">Ensemble Tree Method</p>
+                <ul class="analysis-list">
+                    <li><i class="fas fa-plus"></i> Good baseline performance</li>
+                    <li><i class="fas fa-plus"></i> Handles feature interactions</li>
+                    <li><i class="fas fa-minus"></i> Lower accuracy than boosting methods</li>
+                    <li><i class="fas fa-minus"></i> Less effective with class imbalance</li>
+                </ul>
+            </div>
+
+            <!-- Linear Models -->
+            <div class="analysis-card danger" data-aos="fade-up" data-aos-delay="300">
+                <div class="analysis-header">
+                    <i class="fas fa-times-circle"></i>
+                    <h3>Linear Models</h3>
+                    <span class="badge danger">Limited</span>
+                </div>
+                <p class="analysis-subtitle">Logistic Regression & SGD</p>
+                <ul class="analysis-list">
+                    <li><i class="fas fa-minus"></i> Cannot capture complex patterns</li>
+                    <li><i class="fas fa-minus"></i> Cannot detect synergistic effects of genetic variants</li>
+                    <li><i class="fas fa-minus"></i> Require extensive manual feature engineering</li>
+                    <li><i class="fas fa-minus"></i> Underperform on this task</li>
+                </ul>
+            </div>
+
+            <!-- Naive Bayes -->
+            <div class="analysis-card danger" data-aos="fade-up" data-aos-delay="400">
+                <div class="analysis-header">
+                    <i class="fas fa-ban"></i>
+                    <h3>Naive Bayes</h3>
+                    <span class="badge danger">Not Suitable</span>
+                </div>
+                <p class="analysis-subtitle">Probabilistic Classifier</p>
+                <ul class="analysis-list">
+                    <li><i class="fas fa-minus"></i> Catastrophic performance (Log Loss = 32.3)</li>
+                    <li><i class="fas fa-minus"></i> Violates feature independence assumption</li>
+                    <li><i class="fas fa-minus"></i> Medical text features are highly correlated</li>
+                    <li><i class="fas fa-minus"></i> Not recommended for this use case</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Confusion Matrix Analysis -->
+<section class="confusion-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Error Analysis</span>
+            <h2 class="section-title">Confusion Matrix Insights</h2>
+            <p class="section-subtitle">Understanding where the model makes mistakes</p>
+        </div>
+
+        <div class="confusion-grid">
+            <div class="confusion-card success" data-aos="fade-up" data-aos-delay="100">
+                <h4><i class="fas fa-check"></i> High Accuracy Classes</h4>
+                <ul>
+                    <li><strong>C7:</strong> 89% recall - nearly all true C7 instances correctly identified</li>
+                    <li><strong>C4:</strong> 70% accuracy with abundant training data</li>
+                    <li><strong>C9:</strong> 71% recall despite small sample size</li>
+                </ul>
+            </div>
+
+            <div class="confusion-card warning" data-aos="fade-up" data-aos-delay="200">
+                <h4><i class="fas fa-exchange-alt"></i> Confusion Patterns</h4>
+                <ul>
+                    <li>C1 (neutral) confused with C2 (likely neutral) - expected due to blurred expert boundaries</li>
+                    <li>C4 has 23% misclassified as C5 - semantic similarity</li>
+                    <li>Several classes disproportionately misclassified as C7</li>
+                </ul>
+            </div>
+
+            <div class="confusion-card danger" data-aos="fade-up" data-aos-delay="300">
+                <h4><i class="fas fa-exclamation"></i> Challenging Classes</h4>
+                <ul>
+                    <li><strong>C8:</strong> Only 4 validation samples - completely missed</li>
+                    <li>Rare classes have high misclassification risk</li>
+                    <li>Insufficient data to learn stable patterns</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content" data-aos="zoom-in">
+            <h2>Try the Best Model Now</h2>
+            <p>Use our XGBoost classifier to analyze your genetic variant data.</p>
+            <a href="{{ url_for('predict') }}" class="btn btn-white btn-lg">
+                <i class="fas fa-microscope"></i> Make a Prediction
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

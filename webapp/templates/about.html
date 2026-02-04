@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+
+{% block title %}About - AGI Automatic Genetic Interpretation{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content" data-aos="fade-up">
+            <span class="section-badge">About Us</span>
+            <h1>About the Project</h1>
+            <p>Advancing cancer treatment through AI-powered genetic variant classification</p>
+        </div>
+    </div>
+</section>
+
+<!-- Mission Section -->
+<section class="about-mission">
+    <div class="container">
+        <div class="mission-grid">
+            <div class="mission-content" data-aos="fade-right">
+                <h2>Our Mission</h2>
+                <p class="lead">To accelerate precision medicine by developing machine learning systems that can
+                    automatically classify genetic variants, reducing analysis time from several weeks to just a few
+                    minutes.</p>
+                <p>Cancer is one of the most complex diseases, with each patient's tumor harboring unique genetic
+                    alterations. Understanding which mutations drive cancer growth and which are benign is crucial for
+                    selecting the right treatment.</p>
+                <p>Our project leverages the power of machine learning and natural language processing to analyze
+                    medical literature and clinical notes, providing oncologists with rapid, accurate classification of
+                    genetic variants.</p>
+            </div>
+            <div class="mission-image" data-aos="fade-left">
+                <div class="image-card">
+                    <div class="dna-animation">
+                        <div class="helix">
+                            <div class="strand strand-1"></div>
+                            <div class="strand strand-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Problem & Solution -->
+<section class="problem-solution">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">The Challenge</span>
+            <h2 class="section-title">Problem & Solution</h2>
+        </div>
+
+        <div class="ps-grid">
+            <div class="ps-card problem" data-aos="fade-up" data-aos-delay="100">
+                <div class="ps-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3>The Problem</h3>
+                <ul>
+                    <li><i class="fas fa-times"></i> Manual variant interpretation takes weeks</li>
+                    <li><i class="fas fa-times"></i> Expert pathologists are scarce resource</li>
+                    <li><i class="fas fa-times"></i> Growing backlog of samples to analyze</li>
+                    <li><i class="fas fa-times"></i> Complex medical literature to review</li>
+                    <li><i class="fas fa-times"></i> Inconsistent classification standards</li>
+                </ul>
+            </div>
+
+            <div class="ps-arrow" data-aos="fade-up">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+
+            <div class="ps-card solution" data-aos="fade-up" data-aos-delay="200">
+                <div class="ps-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3>Our Solution</h3>
+                <ul>
+                    <li><i class="fas fa-check"></i> Instant AI-powered classification</li>
+                    <li><i class="fas fa-check"></i> Scalable to thousands of samples</li>
+                    <li><i class="fas fa-check"></i> Consistent, reproducible results</li>
+                    <li><i class="fas fa-check"></i> NLP for medical text understanding</li>
+                    <li><i class="fas fa-check"></i> 9-class clinical significance system</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Technology Stack -->
+<section class="tech-stack">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Technology</span>
+            <h2 class="section-title">Our Tech Stack</h2>
+            <p class="section-subtitle">Built with modern machine learning and NLP technologies</p>
+        </div>
+
+        <div class="tech-grid">
+            <div class="tech-card" data-aos="zoom-in" data-aos-delay="100">
+                <div class="tech-icon python">
+                    <i class="fab fa-python"></i>
+                </div>
+                <h4>Python</h4>
+                <p>Core language for ML</p>
+            </div>
+
+            <div class="tech-card" data-aos="zoom-in" data-aos-delay="150">
+                <div class="tech-icon sklearn">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h4>Scikit-learn</h4>
+                <p>ML algorithms</p>
+            </div>
+
+            <div class="tech-card" data-aos="zoom-in" data-aos-delay="200">
+                <div class="tech-icon xgboost">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h4>XGBoost</h4>
+                <p>Gradient boosting</p>
+            </div>
+
+            <div class="tech-card" data-aos="zoom-in" data-aos-delay="250">
+                <div class="tech-icon nltk">
+                    <i class="fas fa-language"></i>
+                </div>
+                <h4>NLTK</h4>
+                <p>Text processing</p>
+            </div>
+
+            <div class="tech-card" data-aos="zoom-in" data-aos-delay="300">
+                <div class="tech-icon flask">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h4>Flask</h4>
+                <p>Web framework</p>
+            </div>
+
+            <div class="tech-card" data-aos="zoom-in" data-aos-delay="350">
+                <div class="tech-icon pandas">
+                    <i class="fas fa-table"></i>
+                </div>
+                <h4>Pandas</h4>
+                <p>Data analysis</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Timeline -->
+<section class="timeline-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Journey</span>
+            <h2 class="section-title">Project Timeline</h2>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item" data-aos="fade-right">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <h4>Data Analysis</h4>
+                    <p>Analyzed 3,300+ genetic variant samples with medical literature annotations from available
+                        datasets</p>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-aos="fade-left">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <h4>Feature Engineering</h4>
+                    <p>Developed TF-IDF, n-gram, and NER-based features from complex medical texts</p>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-aos="fade-right">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <h4>Model Development</h4>
+                    <p>Trained and compared 6 different ML models including XGBoost and LightGBM</p>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-aos="fade-left">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <h4>Optimization</h4>
+                    <p>Fine-tuned XGBoost achieving 88% accuracy with 0.878 ROC-AUC</p>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-aos="fade-right">
+                <div class="timeline-marker active"></div>
+                <div class="timeline-content">
+                    <h4>Deployment</h4>
+                    <p>Launched web application for real-time genetic variant classification</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Social Impact -->
+<section class="social-impact">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Impact</span>
+            <h2 class="section-title">Social Impact</h2>
+            <p class="section-subtitle">How our work contributes to society</p>
+        </div>
+
+        <div class="impact-grid">
+            <div class="impact-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="impact-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Patient Care</h3>
+                <p>Faster diagnosis means earlier treatment initiation, potentially improving patient outcomes and
+                    survival rates.</p>
+            </div>
+
+            <div class="impact-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="impact-icon">
+                    <i class="fas fa-hospital"></i>
+                </div>
+                <h3>Healthcare Efficiency</h3>
+                <p>Reducing pathologist workload allows them to focus on complex cases requiring human expertise.</p>
+            </div>
+
+            <div class="impact-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="impact-icon">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <h3>Global Access</h3>
+                <p>AI tools can democratize access to expert-level genetic analysis in underserved regions.</p>
+            </div>
+
+            <div class="impact-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="impact-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Education</h3>
+                <p>Serves as a learning tool for medical trainees to understand genotype-phenotype relationships.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content" data-aos="zoom-in">
+            <h2>Explore Our Research</h2>
+            <p>Dive deeper into the data and methodology behind our classification system.</p>
+            <a href="{{ url_for('research') }}" class="btn btn-white btn-lg">
+                <i class="fas fa-flask"></i> View Research Data
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
