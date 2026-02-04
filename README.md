@@ -169,3 +169,4 @@ This project was created for educational purposes as part of the Infomatrix 2026
 **Zhanibek Kassymkan**
 - GitHub: [@kzhnbk](https://github.com/kzhnbk)
 - Project Repository: [infomatrix2026-website](https://github.com/kzhnbk/infomatrix2026-website)
+- Reseacrh Repository: [infomatrix2026](https://github.com/kzhnbk/infomatrix2026)
