@@ -32,11 +32,15 @@
                                 <i class="fas fa-dna"></i> Gene Name
                                 <span class="optional">(Optional)</span>
                             </label>
-                            <input type="text" id="gene" name="gene"
-                                   placeholder="e.g., BRCA1, TP53, EGFR"
-                                   value="{{ gene }}"
-                                   autocomplete="off">
-                            <div class="input-hint">Enter the gene symbol (e.g., BRCA1, TP53, EGFR)</div>
+                            <div class="autocomplete-wrapper">
+                                <input type="text" id="gene" name="gene"
+                                       placeholder="e.g., BRCA1, TP53, EGFR"
+                                       value="{{ gene }}"
+                                       autocomplete="off">
+                                <div class="autocomplete-dropdown" id="geneDropdown"></div>
+                            </div>
+                            <div class="input-hint">Enter a valid gene symbol from the dataset</div>
+                            <div class="validation-error" id="geneError" style="display: none;"></div>
                         </div>
 
                         <div class="form-group">
@@ -44,11 +48,15 @@
                                 <i class="fas fa-code-branch"></i> Variation
                                 <span class="optional">(Optional)</span>
                             </label>
-                            <input type="text" id="variation" name="variation"
-                                   placeholder="e.g., V600E, L858R, Deletion"
-                                   value="{{ variation }}"
-                                   autocomplete="off">
+                            <div class="autocomplete-wrapper">
+                                <input type="text" id="variation" name="variation"
+                                       placeholder="e.g., V600E, L858R, Deletion"
+                                       value="{{ variation }}"
+                                       autocomplete="off">
+                                <div class="autocomplete-dropdown" id="variationDropdown"></div>
+                            </div>
                             <div class="input-hint">Mutation type or specific variant notation</div>
+                            <div class="validation-error" id="variationError" style="display: none;"></div>
                         </div>
 
                         <div class="form-group">
@@ -57,9 +65,13 @@
                                 <span class="required">*</span>
                             </label>
                             <textarea id="text" name="text" rows="8" required
-                                      placeholder="Enter clinical text description, research findings, or PubMed excerpt describing the genetic variant and its clinical significance...">{{ input_text }}</textarea>
+                                      placeholder="Enter clinical text description, research findings, or PubMed excerpt describing the genetic variant and its clinical significance... (minimum {{ min_description_words }} words)">{{ input_text }}</textarea>
                             <div class="input-hint">Paste medical literature text, clinical notes, or research findings about the variant</div>
-                            <div class="char-count"><span id="charCount">0</span> characters</div>
+                            <div class="word-char-count">
+                                <span id="wordCount">0</span> / {{ min_description_words }} words minimum |
+                                <span id="charCount">0</span> characters
+                            </div>
+                            <div class="validation-error" id="textError" style="display: none;"></div>
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitBtn">
@@ -272,25 +284,249 @@ Response:
 {% endblock %}
 
 {% block extra_js %}
+<style>
+    .autocomplete-wrapper {
+        position: relative;
+    }
+    .autocomplete-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 200px;
+        overflow-y: auto;
+        background: var(--bg-primary, #1a1a2e);
+        border: 1px solid var(--border-color, #333);
+        border-radius: 8px;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .autocomplete-dropdown.show {
+        display: block;
+    }
+    .autocomplete-item {
+        padding: 10px 15px;
+        cursor: pointer;
+        transition: background 0.2s;
+        color: var(--text-primary, #fff);
+    }
+    .autocomplete-item:hover,
+    .autocomplete-item.selected {
+        background: var(--accent-color, #14b8a6);
+        color: #fff;
+    }
+    .validation-error {
+        color: #dc2626;
+        font-size: 0.85rem;
+        margin-top: 5px;
+        padding: 5px 10px;
+        background: rgba(220, 38, 38, 0.1);
+        border-radius: 4px;
+    }
+    .word-char-count {
+        font-size: 0.85rem;
+        color: var(--text-secondary, #888);
+        margin-top: 5px;
+    }
+    .word-char-count.warning {
+        color: #f59e0b;
+    }
+    .word-char-count.valid {
+        color: #14b8a6;
+    }
+    .form-group input.invalid,
+    .form-group textarea.invalid {
+        border-color: #dc2626;
+    }
+    .form-group input.valid,
+    .form-group textarea.valid {
+        border-color: #14b8a6;
+    }
+</style>
+
 <script>
-    // Character counter
+    // Valid data from server
+    const validGenes = {{ valid_genes | tojson }};
+    const validVariations = {{ valid_variations | tojson }};
+    const minDescriptionWords = {{ min_description_words }};
+
+    // Elements
     const textArea = document.getElementById('text');
     const charCount = document.getElementById('charCount');
+    const wordCount = document.getElementById('wordCount');
+    const geneInput = document.getElementById('gene');
+    const variationInput = document.getElementById('variation');
+    const geneDropdown = document.getElementById('geneDropdown');
+    const variationDropdown = document.getElementById('variationDropdown');
+    const geneError = document.getElementById('geneError');
+    const variationError = document.getElementById('variationError');
+    const textError = document.getElementById('textError');
+    const form = document.getElementById('predictionForm');
+    const submitBtn = document.getElementById('submitBtn');
 
-    if (textArea && charCount) {
-        textArea.addEventListener('input', function() {
-            charCount.textContent = this.value.length;
+    // Count words function
+    function countWords(text) {
+        if (!text || !text.trim()) return 0;
+        return text.trim().split(/\s+/).length;
+    }
+
+    // Update word and character count
+    function updateTextCounts() {
+        const text = textArea.value;
+        const words = countWords(text);
+        const chars = text.length;
+
+        wordCount.textContent = words;
+        charCount.textContent = chars;
+
+        const countContainer = wordCount.parentElement;
+        if (words >= minDescriptionWords) {
+            countContainer.classList.remove('warning');
+            countContainer.classList.add('valid');
+            textArea.classList.remove('invalid');
+            textArea.classList.add('valid');
+            textError.style.display = 'none';
+        } else if (words > 0) {
+            countContainer.classList.add('warning');
+            countContainer.classList.remove('valid');
+            textArea.classList.add('invalid');
+            textArea.classList.remove('valid');
+        } else {
+            countContainer.classList.remove('warning', 'valid');
+            textArea.classList.remove('invalid', 'valid');
+        }
+    }
+
+    // Autocomplete setup
+    function setupAutocomplete(input, dropdown, validItems, errorEl) {
+        let selectedIndex = -1;
+
+        input.addEventListener('input', function() {
+            const value = this.value.trim().toUpperCase();
+            dropdown.innerHTML = '';
+            selectedIndex = -1;
+
+            if (value.length === 0) {
+                dropdown.classList.remove('show');
+                input.classList.remove('invalid', 'valid');
+                errorEl.style.display = 'none';
+                return;
+            }
+
+            const matches = validItems.filter(item =>
+                item.toUpperCase().includes(value)
+            ).slice(0, 10);
+
+            if (matches.length > 0) {
+                matches.forEach((item, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'autocomplete-item';
+                    div.textContent = item;
+                    div.addEventListener('click', function() {
+                        input.value = item;
+                        dropdown.classList.remove('show');
+                        validateInput(input, validItems, errorEl);
+                    });
+                    dropdown.appendChild(div);
+                });
+                dropdown.classList.add('show');
+            } else {
+                dropdown.classList.remove('show');
+            }
+
+            // Real-time validation
+            validateInput(input, validItems, errorEl);
         });
-        charCount.textContent = textArea.value.length;
+
+        // Keyboard navigation
+        input.addEventListener('keydown', function(e) {
+            const items = dropdown.querySelectorAll('.autocomplete-item');
+            if (!items.length) return;
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+                updateSelected(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                selectedIndex = Math.max(selectedIndex - 1, 0);
+                updateSelected(items);
+            } else if (e.key === 'Enter' && selectedIndex >= 0) {
+                e.preventDefault();
+                input.value = items[selectedIndex].textContent;
+                dropdown.classList.remove('show');
+                validateInput(input, validItems, errorEl);
+            } else if (e.key === 'Escape') {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        function updateSelected(items) {
+            items.forEach((item, index) => {
+                item.classList.toggle('selected', index === selectedIndex);
+            });
+        }
+
+        // Hide dropdown on blur
+        input.addEventListener('blur', function() {
+            setTimeout(() => {
+                dropdown.classList.remove('show');
+                validateInput(input, validItems, errorEl);
+            }, 200);
+        });
+    }
+
+    // Validate input against valid items
+    function validateInput(input, validItems, errorEl) {
+        const value = input.value.trim();
+        if (value === '') {
+            input.classList.remove('invalid', 'valid');
+            errorEl.style.display = 'none';
+            return true;
+        }
+
+        const isValid = validItems.some(item =>
+            item.toUpperCase() === value.toUpperCase()
+        );
+
+        if (isValid) {
+            input.classList.remove('invalid');
+            input.classList.add('valid');
+            errorEl.style.display = 'none';
+            return true;
+        } else {
+            input.classList.add('invalid');
+            input.classList.remove('valid');
+            errorEl.textContent = `"${value}" is not in the valid list. Please select from suggestions.`;
+            errorEl.style.display = 'block';
+            return false;
+        }
+    }
+
+    // Initialize
+    if (textArea && charCount && wordCount) {
+        textArea.addEventListener('input', updateTextCounts);
+        updateTextCounts();
+    }
+
+    if (geneInput && geneDropdown) {
+        setupAutocomplete(geneInput, geneDropdown, validGenes, geneError);
+    }
+
+    if (variationInput && variationDropdown) {
+        setupAutocomplete(variationInput, variationDropdown, validVariations, variationError);
     }
 
     // Sample data buttons
     document.querySelectorAll('.sample-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            document.getElementById('gene').value = this.dataset.gene;
-            document.getElementById('variation').value = this.dataset.variation;
-            document.getElementById('text').value = this.dataset.text;
-            charCount.textContent = this.dataset.text.length;
+            geneInput.value = this.dataset.gene;
+            variationInput.value = this.dataset.variation;
+            textArea.value = this.dataset.text;
+            updateTextCounts();
+            validateInput(geneInput, validGenes, geneError);
+            validateInput(variationInput, validVariations, variationError);
         });
     });
 
@@ -310,12 +546,35 @@ Response:
         });
     }
 
-    // Form submission loading state
-    const form = document.getElementById('predictionForm');
-    const submitBtn = document.getElementById('submitBtn');
-
+    // Form validation before submission
     if (form && submitBtn) {
-        form.addEventListener('submit', function() {
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+
+            // Validate gene
+            const geneValue = geneInput.value.trim();
+            if (geneValue && !validGenes.some(g => g.toUpperCase() === geneValue.toUpperCase())) {
+                geneError.textContent = `"${geneValue}" is not a valid gene. Please select from the list.`;
+                geneError.style.display = 'block';
+                geneInput.classList.add('invalid');
+                isValid = false;
+            }
+
+            // Validate description word count
+            const words = countWords(textArea.value);
+            if (words < minDescriptionWords) {
+                textError.textContent = `Description must contain at least ${minDescriptionWords} words. Current: ${words} words.`;
+                textError.style.display = 'block';
+                textArea.classList.add('invalid');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+                return;
+            }
+
+            // Show loading state
             submitBtn.querySelector('span').style.display = 'none';
             submitBtn.querySelector('.btn-loader').style.display = 'inline-block';
             submitBtn.disabled = true;
