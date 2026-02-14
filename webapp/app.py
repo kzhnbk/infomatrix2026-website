@@ -81,6 +81,66 @@ TOP_GENES = [
     {'gene': 'PDGFRA', 'frequency': 60, 'role': 'Growth factor receptor; GIST; imatinib target'}
 ]
 
+# Valid genes list (from training data)
+VALID_GENES = [
+    'ABL1', 'ACVR1', 'AGO2', 'AKT1', 'AKT2', 'AKT3', 'ALK', 'APC', 'AR', 'ARAF',
+    'ARID1A', 'ARID1B', 'ARID2', 'ARID5B', 'ASXL1', 'ASXL2', 'ATM', 'ATR', 'ATRX',
+    'AURKA', 'AURKB', 'AXIN1', 'AXL', 'B2M', 'BAP1', 'BARD1', 'BCL10', 'BCL2',
+    'BCL2L11', 'BCOR', 'BRAF', 'BRCA1', 'BRCA2', 'BRD4', 'BRIP1', 'BTK', 'CARD11',
+    'CARM1', 'CASP8', 'CBL', 'CCND1', 'CCND2', 'CCND3', 'CCNE1', 'CDH1', 'CDK12',
+    'CDK4', 'CDK6', 'CDK8', 'CDKN1A', 'CDKN1B', 'CDKN2A', 'CDKN2B', 'CDKN2C',
+    'CEBPA', 'CHEK2', 'CIC', 'CREBBP', 'CTCF', 'CTLA4', 'CTNNB1', 'DDR2', 'DICER1',
+    'DNMT3A', 'DNMT3B', 'DUSP4', 'EGFR', 'EIF1AX', 'ELF3', 'EP300', 'EPAS1', 'EPCAM',
+    'ERBB2', 'ERBB3', 'ERBB4', 'ERCC2', 'ERCC3', 'ERCC4', 'ERG', 'ERRFI1', 'ESR1',
+    'ETV1', 'ETV6', 'EWSR1', 'EZH2', 'FAM58A', 'FANCA', 'FANCC', 'FAT1', 'FBXW7',
+    'FGF19', 'FGF3', 'FGF4', 'FGFR1', 'FGFR2', 'FGFR3', 'FGFR4', 'FLT1', 'FLT3',
+    'FOXA1', 'FOXL2', 'FOXO1', 'FOXP1', 'FUBP1', 'GATA3', 'GLI1', 'GNA11', 'GNAQ',
+    'GNAS', 'H3F3A', 'HIST1H1C', 'HLA-A', 'HLA-B', 'HNF1A', 'HRAS', 'IDH1', 'IDH2',
+    'IGF1R', 'IKBKE', 'IKZF1', 'IL7R', 'INPP4B', 'JAK1', 'JAK2', 'JUN', 'KDM5A',
+    'KDM5C', 'KDM6A', 'KDR', 'KEAP1', 'KIT', 'KLF4', 'KMT2A', 'KMT2B', 'KMT2C',
+    'KMT2D', 'KNSTRN', 'KRAS', 'LATS1', 'LATS2', 'MAP2K1', 'MAP2K2', 'MAP2K4',
+    'MAP3K1', 'MAPK1', 'MDM2', 'MDM4', 'MED12', 'MEF2B', 'MEN1', 'MET', 'MGA',
+    'MLH1', 'MPL', 'MSH2', 'MSH6', 'MTOR', 'MYC', 'MYCN', 'MYD88', 'MYOD1', 'NCOR1',
+    'NF1', 'NF2', 'NFE2L2', 'NFKBIA', 'NKX2-1', 'NOTCH1', 'NOTCH2', 'NPM1', 'NRAS',
+    'NSD1', 'NTRK1', 'NTRK2', 'NTRK3', 'NUP93', 'PAK1', 'PAX8', 'PBRM1', 'PDGFRA',
+    'PDGFRB', 'PIK3CA', 'PIK3CB', 'PIK3CD', 'PIK3R1', 'PIK3R2', 'PIK3R3', 'PIM1',
+    'PMS1', 'PMS2', 'POLE', 'PPM1D', 'PPP2R1A', 'PPP6C', 'PRDM1', 'PTCH1', 'PTEN',
+    'PTPN11', 'PTPRD', 'PTPRT', 'RAB35', 'RAC1', 'RAD21', 'RAD50', 'RAD51B',
+    'RAD51C', 'RAD51D', 'RAD54L', 'RAF1', 'RARA', 'RASA1', 'RB1', 'RBM10', 'RET',
+    'RHEB', 'RHOA', 'RICTOR', 'RIT1', 'RNF43', 'ROS1', 'RRAS2', 'RUNX1', 'RXRA',
+    'RYBP', 'SDHB', 'SDHC', 'SETD2', 'SF3B1', 'SHOC2', 'SHQ1', 'SMAD2', 'SMAD3',
+    'SMAD4', 'SMARCA4', 'SMARCB1', 'SMO', 'SOS1', 'SOX9', 'SPOP', 'SRC', 'SRSF2',
+    'STAG2', 'STAT3', 'STK11', 'TCF3', 'TCF7L2', 'TERT', 'TET1', 'TET2', 'TGFBR1',
+    'TGFBR2', 'TMPRSS2', 'TP53', 'TP53BP1', 'TSC1', 'TSC2', 'U2AF1', 'VEGFA', 'VHL',
+    'WHSC1', 'WHSC1L1', 'XPO1', 'XRCC2', 'YAP1'
+]
+
+# Common variation types (most frequent from training data)
+VALID_VARIATIONS = [
+    'Amplification', 'Deletion', 'Truncating Mutations', 'Fusions', 'Overexpression',
+    'Copy Number Loss', 'Wildtype', 'Promoter Mutations', 'Epigenetic Silencing',
+    'Hypermethylation', 'Promoter Hypermethylation',
+    # Common point mutations
+    'V600E', 'L858R', 'T790M', 'G12D', 'G12V', 'G12C', 'G13D', 'Q61K', 'Q61R',
+    'R132H', 'R172K', 'E545K', 'H1047R', 'D816V', 'D842V', 'F1174L', 'L1196M',
+    'C797S', 'G719A', 'G719S', 'S768I', 'L861Q', 'T315I', 'E255K', 'M351T',
+    # Exon mutations
+    'Exon 19 deletion', 'Exon 20 insertion', 'Exon 11 mutations', 'Exon 9 mutations',
+    'Exon 19 deletion/insertion', 'Exon 19 insertion', 'Exon 20 insertions',
+    # Fusions
+    'BCR-ABL1 Fusion', 'EML4-ALK Fusion', 'NPM-ALK Fusion', 'ROS1-CD74 Fusion',
+    'BRAF-KIAA1549 Fusion', 'TMPRSS2-ERG Fusion', 'ETV6-NTRK3 Fusion',
+    'FGFR3-TACC3 Fusion', 'KIF5B-RET Fusion', 'CCDC6-RET Fusion',
+    # Splice variants
+    'EGFRvIII', 'AR-V7', 'MET exon 14 skipping',
+    # Common mutations by position
+    'R175H', 'R248Q', 'R273H', 'R282W', 'Y220C', 'G245S', 'R249S', 'H179R',
+    'K700E', 'R625H', 'N550K', 'S249C', 'Y373C', 'K650E', 'R248W', 'R273C'
+]
+
+# Minimum word count for description
+MIN_DESCRIPTION_WORDS = 40
+
 # Model performance data
 MODEL_PERFORMANCE = [
     {'model': 'XGBoost', 'log_loss': 1.156, 'accuracy': 0.750, 'f1_macro': 0.718, 'roc_auc': 0.878},
@@ -155,6 +215,23 @@ def models():
     return render_template('models.html', model_performance=MODEL_PERFORMANCE)
 
 
+def count_words(text):
+    """Count words in text"""
+    if not text:
+        return 0
+    return len(text.split())
+
+
+@app.route('/api/valid-inputs', methods=['GET'])
+def get_valid_inputs():
+    """API endpoint to get valid genes and variations for autocomplete"""
+    return jsonify({
+        'genes': VALID_GENES,
+        'variations': VALID_VARIATIONS,
+        'min_description_words': MIN_DESCRIPTION_WORDS
+    })
+
+
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
     """Prediction/inference page"""
@@ -170,8 +247,14 @@ def predict():
         variation = request.form.get('variation', '').strip()
         input_text = request.form.get('text', '').strip()
 
-        if not input_text:
+        # Validate gene if provided
+        if gene and gene.upper() not in [g.upper() for g in VALID_GENES]:
+            error = f"Invalid gene '{gene}'. Please select a valid gene from the list."
+        # Validate description word count
+        elif not input_text:
             error = "Please provide text description for classification"
+        elif count_words(input_text) < MIN_DESCRIPTION_WORDS:
+            error = f"Description must contain at least {MIN_DESCRIPTION_WORDS} words. Current: {count_words(input_text)} words."
         else:
             model, vectorizer, label_encoder = load_model()
 
@@ -228,7 +311,10 @@ def predict():
                          input_text=input_text,
                          gene=gene,
                          variation=variation,
-                         class_descriptions=CLASS_DESCRIPTIONS)
+                         class_descriptions=CLASS_DESCRIPTIONS,
+                         valid_genes=VALID_GENES,
+                         valid_variations=VALID_VARIATIONS,
+                         min_description_words=MIN_DESCRIPTION_WORDS)
 
 
 @app.route('/api/predict', methods=['POST'])
